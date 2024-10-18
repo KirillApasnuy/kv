@@ -8,131 +8,140 @@
   <script src="https://api-maps.yandex.ru/2.1/?apikey=aa5d894c-7e34-417c-9ee2-b1aae5413d0d&lang=ru_RU" type="text/javascript"></script>
   <title>AR Model Display</title>
   <style>
+
+    #introVideo {
+      height: 100vw;
+      object-fit: cover !important;
+    }
+
+    html {
+      overflow-x: hidden !important;
+    }
+
     body {
-  margin: 0;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  width: 100vh;
-  margin: 0;
-  padding: 0;
-}
+      overflow-x: hidden !important;
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100vw;
+      height: 150vw;
+      margin: 0;
+      padding: 0;
+    }
 
-.button-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 20px;
-}
+    .button-container {
+      
+      display: none;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10001; /* Add this line */
+    }
 
-.button-container button {
-  margin: 5px;
-  padding: 10px 15px;
-  font-size: 16px;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
+    .button-container button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
 
-.button-container button:hover {
-  background-color: #0056b3;
-}
+    #videoOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #474747;
+      z-index: 10000;
+    }
 
-#videoOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: black;
-}
+    video {
+      width: 100%;
+      height: auto;
+    }
 
-video {
-  width: 100%;
-  height: auto;
-}
+    #mapOverlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10001;
+      display: none;
+      background: white;
+      padding: 20px;
+      border: 2px solid #007BFF;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 90%;
+    }
 
-#mapOverlay {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10001;
-  display: none;
-  background: white;
-  padding: 20px;
-  border: 2px solid #007BFF;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 90%;
-}
+    #map {
+      width: 100%;
+      height: 450px;
+      margin-bottom: 10px;
+    }
 
-#map {
-  width: 100%;
-  height: 450px;
-  margin-bottom: 10px;
-}
+    #textOverlay {
+      position: absolute;
+      top: 150px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10002;
+      display: none;
+      background: white;
+      padding: 20px;
+      border: 2px solid #007BFF;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      max-width: 90%;
+      text-align: center;
+    }
 
-#textOverlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10002;
-  display: none;
-  background: white;
-  padding: 20px;
-  border: 2px solid #007BFF;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 90%;
-  text-align: center;
-}
+    #textContent {
+      margin-bottom: 10px;
+      width: 90%;
+      font-size: 18px;
+      line-height: 1.5;
+    }
 
-#textContent {
-  margin-bottom: 10px;
-  width: 90%;
-  font-size: 18px;
-  line-height: 1.5;
-}
+    /* Media queries for responsiveness */
+    @media (max-width: 768px) {
+      .button-container button {
+        font-size: 14px;
+        padding: 8px 12px;
+      }
 
-/* Media queries for responsiveness */
-@media (max-width: 768px) {
-  .button-container button {
-    font-size: 14px;
-    padding: 8px 12px;
-  }
+      #textContent {
+        font-size: 16px;
+      }
+    }
 
-  #textContent {
-    font-size: 16px;
-  }
-}
+    @media (max-width: 480px) {
+      .button-container button {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
 
-@media (max-width: 480px) {
-  .button-container button {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-
-  #textContent {
-    font-size: 14px;
-  }
-}
-    
+      #textContent {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2393.592695833832!2d103.08097347671867!3d53.13545677222884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d06c69d543da807%3A0xc527512d110ad5c2!2z0J_QsNC80Y_RgtC90LjQuiDQm9GO0LHQvtCy0Ywg0Lgg0LPQvtC70YPQsdC4!5e0!3m2!1sru!2sru!4v1729282016897!5m2!1sru!2sru" width="400" height="100vw" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   <div id="videoOverlay">
     <video id="introVideo" autoplay muted>
       <source src="test.mp4" type="video/mp4">
@@ -140,7 +149,7 @@ video {
     </video>
   </div>
 
-  <div class="button-container" style="display: none;">
+  <div class="button-container">
     <button onclick="alert('Button 1 clicked')">Главное меню</button>
     <button onclick="alert('Button 2 clicked')">Следующая реконструкция</button>
     <button onclick="alert('Button 3 clicked')">Города</button>
@@ -150,32 +159,21 @@ video {
     <button onclick="showMap()">Карта</button>
     <button id="listenButton">Слушать</button>
     <button id="readButton">Читать</button>
-    <div id="textOverlay" style="display: none;">
-      <div id="textContent">
-        <p>На момент съёмок Дорошиной было 50 лет, а Теняковой — только 40. Съёмки эпизода купания Раисы Захаровны и Василия проходили в ноябре в Батуми (Грузия). Температура воды составляла 14℃. Съёмки фильма проходили на окраине в Медвежьегорска в Карелии в доме на берегу реки Кумса.</p>
-      </div>
-
-      На момент съёмок Дорошиной было 50 лет, а Теняковой — только 40. Съёмки эпизода купания Раисы Захаровны и Василия проходили в ноябре в Батуми (Грузия). Температура воды составляла 14℃. Съёмки фильма проходили на окраине в Медвежьегорска в Карелии в доме на берегу реки Кумса.
-      <button id="closeTextButton">Закрыть</button>
-    </div>
   </div>
 
+  <audio id="audioPlayer" src="audio.mp3" preload="auto"></audio>
+
   <div id="mapOverlay">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2393.592695833832!2d103.08097347671867!3d53.13545677222884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d06c69d543da807%3A0xc527512d110ad5c2!2z0J_QsNC80Y_RgtC90LjQuiDQm9GO0LHQvtCy0Ywg0Lgg0LPQvtC70YPQsdC4!5e0!3m2!1sru!2sru!4v1729223246598!5m2!1sru!2sru" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div id="map"></div>
     <button onclick="closeMap()">Закрыть</button>
   </div>
 
-  <a-scene id="arScene" embedded arjs style="display: none;">
-    <a-assets>
-      <a-asset-item id="tree" src="scene.gltf"></a-asset-item>
-      
-    <a-text value="Сцена из кинофильма 'Любовь и голуби'"></a-text>
-    </a-assets>
-    <a-entity gltf-model="#tree" position="0 0 0"></a-entity>
-    <a-marker-camera preset='hiro'></a-marker-camera>
-  </a-scene>
-
-  <audio id="audioPlayer" src="audio.mp3" preload="auto"></audio>
+  <div id="textOverlay">
+    <div id="textContent">
+      <p>На момент съёмок Дорошиной было 50 лет, а Теняковой — только 40. Съёмки эпизода купания Раисы Захаровны и Василия проходили в ноябре в Батуми (Грузия). Температура воды составляла 14℃. Съёмки фильма проходили на окраине в Медвежьегорска в Карелии в доме на берегу реки Кумса.</p>
+    </div>
+    <button id="closeTextButton">Закрыть</button>
+  </div>
 
   <script>
     const video = document.getElementById('introVideo');
@@ -192,8 +190,10 @@ video {
 
     video.addEventListener('ended', function() {
       videoOverlay.style.display = 'none';
-      arScene.style.display = 'block';
-      buttonContainer.style.display = 'block';
+      buttonContainer.style.display = 'inline'
+      setTimeout(() => {
+        arScene.style.display = 'block';
+      }, 500);
     });
 
     function showMap() {

@@ -89,7 +89,6 @@
 
   <div id="mapOverlay">
     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2393.592695833832!2d103.08097347671867!3d53.13545677222884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d06c69d543da807%3A0xc527512d110ad5c2!2z0J_QsNC80Y_RgtC90LjQuiDQm9GO0LHQvtCy0Ywg0Lgg0LPQvtC70YPQsdC4!5e0!3m2!1sru!2sru!4v1729223246598!5m2!1sru!2sru" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-
     <button onclick="closeMap()">Закрыть</button>
   </div>
 
@@ -117,14 +116,13 @@
 
     function showMap() {
       mapOverlay.style.display = 'block'; // Показать карту
-      initMap(); // Инициализация карты 
-      }
+      initMap(); // Инициализация карты }
 
     function closeMap() {
       mapOverlay.style.display = 'none'; // Скрыть карту 
     }
 
-    const coor = [53.1354568, 103.0809735];
+    const coor = [53.135389, 103.083660];
     ymaps.ready(init);
   
     function init(){

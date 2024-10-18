@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=aa5d894c-7e34-417c-9ee2-b1aae5413d0d&lang=ru_RU" type="text/javascript"></script>
+  <title>AR Model Display</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    .button-container {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 9999; /* чтобы кнопки были поверх AR-сцены */
+    }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #videoOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10000; /* выше AR-сцены */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: black;
+    }
+    video {
+      width: 100%;
+      height: auto;
+    }
+    #mapOverlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10001; /* выше видео и AR-сцены */
+      display: none;
+      background: white;
+      padding: 20px;
+      border: 2px solid #007BFF;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    #map {
+      width: 600px;
+      height: 450px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="videoOverlay">
+    <video id="introVideo" autoplay muted>
+      <source src="test.mp4" type="video/mp4">
+      Ваш браузер не поддерживает видео.
+    </video>
+  </div>
+
+  <div class="button-container" style="display: none;">
+    <button onclick="alert('Button 1 clicked')">Главное меню</button>
+    <button onclick="alert('Button 2 clicked')">Следующая реконструкция</button>
+    <button onclick="alert('Button 3 clicked')">Города</button>
+    <button onclick="alert('Button 4 clicked')">Фильмы</button>
+    <button onclick="alert('Button 5 clicked')">Следующая реконструкция</button>
+    <button onclick="alert('Button 6 clicked')">Рассказать об этом месте</button>
+    <button onclick="showMap()">Карта</button>
+  </div>
+
+  <div id="mapOverlay">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2393.592695833832!2d103.08097347671867!3d53.13545677222884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5d06c69d543da807%3A0xc527512d110ad5c2!2z0J_QsNC80Y_RgtC90LjQuiDQm9GO0LHQvtCy0Ywg0Lgg0LPQvtC70YPQsdC4!5e0!3m2!1sru!2sru!4v1729223246598!5m2!1sru!2sru" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+    <button onclick="closeMap()">Закрыть</button>
+  </div>
+
+  <a-scene id="arScene" embedded arjs style="display: none;">
+    <a-assets>
+      <a-asset-item id="tree" src="adamHead.gltf"></a-asset-item>
+    </a-assets>
+    <a-entity gltf-model="#tree" position="0 0 0"></a-entity>
+    <a-marker-camera preset='hiro'></a-marker-camera>
+    <a-text value="Сцена из кинофильма 'Любовь и голуби'"></a-text>
+  </a-scene>
+
+  <script>
+    const video = document.getElementById('introVideo');
+    const videoOverlay = document.getElementById('videoOverlay');
+    const arScene = document.getElementById('arScene');
+    const buttonContainer = document.querySelector('.button-container');
+    const mapOverlay = document.getElementById('mapOverlay');
+
+    video.addEventListener('ended', function() {
+      videoOverlay.style.display = 'none'; // Скрыть заставку 
+      arScene.style.display = 'block'; // Показать AR-сцену 
+      buttonContainer.style.display = 'block'; // Показать кнопки
+       });
+
+    function showMap() {
+      mapOverlay.style.display = 'block'; // Показать карту
+      initMap(); // Инициализация карты 
+      }
+
+    function closeMap() {
+      mapOverlay.style.display = 'none'; // Скрыть карту 
+    }
+
+    const coor = [53.1354568, 103.0809735];
+    ymaps.ready(init);
+  
+    function init(){
+      // Создание карты.
+      var myMap = new ymaps.Map("map", {
+        center: coor,
+        zoom: 15 });
+
+      // Создание метки
+      var myPlacemark = new ymaps.Placemark(coor, {
+        balloonContent: 'Это метка на карте!'
+      });
+
+      // Добавление метки на карту
+      myMap.geoObjects.add(myPlacemark);
+    }
+  </script>
+</body>
+</html>
